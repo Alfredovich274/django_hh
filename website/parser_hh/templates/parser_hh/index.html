@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+                <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!-- About-->
+            <section class="resume-section" id="about">
+                <div class="resume-section-content">
+                    <h2 class="mb-0">
+                        Парсер
+                        <span class="lead mb-5 colortext"><b>вакансий</b></span>
+                    </h2>
+                    <br><br>
+                    <p class="lead mb-5">Что делает этот парсер: В форме,
+                        Вы можете создать запрос для сайта <b><span class="colortext">hh.ru</span></b>.
+                        Парсер отберет все ВАКАНСИИ, попадающие под условие
+                        в форме, после чего покажет результат.</p>
+                    <!--            1-->
+                    <div class="flex-grow-1">
+                    <br>
+                    <h4>Полученные запросы</h4>
+                        <table class="table table-borderless">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">1</th>
+                                    <th scope="col">2</th>
+                                    <th scope="col">3</th>
+                                    <th scope="col">4</th>
+                                    <th scope="col">5</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if object_list%}
+                                    {% for items in object_list %}
+                                        <tr>
+                                            {% if items.key_words%}
+                                                <td>{{items.key_words}}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            {% if items.salary%}
+                                                <td>{{items.salary}}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            {% if items.city%}
+                                                <td>{{items.city}}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            {% if items.schedule%}
+                                                <td>{{items.schedule}}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            {% if items.experience%}
+                                                <td>{{items.experience}}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            <td>
+                                                <a  href="{% url 'parser:delete-params' pk=items.pk %}">
+                                                    Удалить
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    Нет данных
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+{% endblock %}
