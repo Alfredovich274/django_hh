@@ -1,13 +1,16 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-
+from django.contrib.auth.decorators import login_required
 from .models import Vacancy, Param, Schedule, Experience, Skill, Specialization
 from .forms import ContactForm, CreateParams
 from django.core.mail import send_mail
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from .mymixins import AuthorPermissionMixin
 
 
 # Create your views here.
+#  @login_required
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -36,16 +39,25 @@ class ParamsListView(ListView):
     model = Param
     template_name = 'parser_hh/index.html'
 
+    def get_queryset(self):
+        if self.request.user.id:
+            return Param.objects.filter(author_id=self.request.user.id)
+        else:
+            return Param.objects.all()
 
-class VacancyListView(ListView):
+
+class VacancyListView(LoginRequiredMixin, ListView):
     model = Vacancy
     template_name = 'parser_hh/results.html'
 
 
+@login_required
 def create_params(request):
     if request.method == 'POST':
         form = CreateParams(request.POST, files=request.FILES)
         if form.is_valid():
+            # Добавить в форму текущего пользователя request.user
+            form.instance.author = request.user
             form.save()
         return HttpResponseRedirect(reverse('parser:index'))
     else:
@@ -69,19 +81,43 @@ def create_params(request):
 #         return super().form_valid(form)
 
 
-class ParamsDeleteView(DeleteView):
+class ParamsDeleteView(UserPassesTestMixin, AuthorPermissionMixin, DeleteView):
     template_name = 'parser_hh/delete-params.html'
     model = Param
     success_url = reverse_lazy('parser:index')
 
+    def test_func(self):
+        obj = self.get_object()  # рабочий вариант, но необходим объект
+        return self.request.user.is_superuser or obj.author == self.request.user
 
-class VacancyDeleteView(DeleteView):
+
+class VacancyDeleteView(UserPassesTestMixin, AuthorPermissionMixin, DeleteView):
     template_name = 'parser_hh/delete-vacancy.html'
     model = Vacancy
     success_url = reverse_lazy('parser:results')
 
+    def test_func(self):
+        obj = self.get_object()  # рабочий вариант, но необходим объект
+        return self.request.user.is_superuser or obj.author == self.request.user
 
-class VacancyDetailView(DetailView):
+
+class VacancyDetailView(UserPassesTestMixin, DetailView):
     model = Vacancy
     template_name = 'parser_hh/vacancy.html'
 
+    def test_func(self):
+        obj = self.get_object()  # рабочий вариант, но необходим объект
+        return self.request.user.is_superuser or obj.author == self.request.user
+
+    # def has_permission(self):
+    #     return self.get_object().author == self.request.user
+
+
+# class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+#     model = Post
+#     template_name = 'post_edit.html'
+#     fields = ['title', 'body']
+#
+#     def test_func(self):
+#         obj = self.get_object()
+#         return obj.author == self.request.user

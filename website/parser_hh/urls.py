@@ -3,6 +3,7 @@ from parser_hh import views
 
 app_name = 'parser'
 
+
 urlpatterns = [
     path('contacts/', views.contact, name='contacts'),
     path('', views.ParamsListView.as_view(), name='index'),
