@@ -81,7 +81,7 @@ def create_params(request):
 #         return super().form_valid(form)
 
 
-class ParamsDeleteView(UserPassesTestMixin, AuthorPermissionMixin, DeleteView):
+class ParamsDeleteView(UserPassesTestMixin, DeleteView):
     template_name = 'parser_hh/delete-params.html'
     model = Param
     success_url = reverse_lazy('parser:index')
@@ -91,7 +91,7 @@ class ParamsDeleteView(UserPassesTestMixin, AuthorPermissionMixin, DeleteView):
         return self.request.user.is_superuser or obj.author == self.request.user
 
 
-class VacancyDeleteView(UserPassesTestMixin, AuthorPermissionMixin, DeleteView):
+class VacancyDeleteView(UserPassesTestMixin, DeleteView):
     template_name = 'parser_hh/delete-vacancy.html'
     model = Vacancy
     success_url = reverse_lazy('parser:results')
