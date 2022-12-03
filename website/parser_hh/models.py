@@ -1,5 +1,5 @@
 from django.db import models
-#from userapp.models import User
+from userapp.models import UserHh
 
 
 # Create your models here.
@@ -62,6 +62,20 @@ class Schedule(models.Model):
         return self.name
 
 
+class Param(models.Model):
+    key_words = models.CharField(max_length=64)
+    salary = models.CharField(max_length=8, blank=True, null=True)
+    city = models.CharField(max_length=8, blank=True, null=True)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, blank=True,
+                                 null=True)
+    experience = models.ForeignKey(Experience, on_delete=models.CASCADE,
+                                   blank=True, null=True)
+    author = models.ForeignKey(UserHh, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.key_words
+
+
 class Vacancy(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(blank=True)  # Описание
@@ -86,20 +100,8 @@ class Vacancy(models.Model):
     url = models.CharField(max_length=64, blank=True)
     skill = models.ManyToManyField(Skill, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserHh, on_delete=models.CASCADE)
+    param = models.ForeignKey(Param, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
-
-
-class Param(models.Model):
-    key_words = models.CharField(max_length=64)
-    salary = models.CharField(max_length=8, blank=True, null=True)
-    city = models.CharField(max_length=8, blank=True, null=True)
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, blank=True,
-                                 null=True)
-    experience = models.ForeignKey(Experience, on_delete=models.CASCADE,
-                                   blank=True, null=True)
-    #  user = models.ManyToManyField(User)
-
-    def __str__(self):
-        return self.key_words

@@ -1,10 +1,8 @@
-import pprint
 from django.core.management.base import BaseCommand
-from parser_hh.models import Company, City, Vacancy, Skill, Salary, Schedule,\
+from website import Company, City, Vacancy, Skill, Salary, Schedule,\
     Experience, Employment, Specialization
 import subprocess
 import json
-import sys
 
 
 class Command(BaseCommand):

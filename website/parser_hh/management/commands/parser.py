@@ -22,6 +22,7 @@ description - описание компании
 - key_skills множественное name  
 - professional_roles - профессиональная роль
 - specializations - множественное name - специализация
+user_vacancy
 """
 
 

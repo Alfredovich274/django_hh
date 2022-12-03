@@ -59,9 +59,16 @@
                                                 <td></td>
                                             {% endif %}
                                             <td>
+                                                {% if user.is_authenticated %}
                                                 <a  href="{% url 'parser:delete-params' pk=items.pk %}">
                                                     Удалить
                                                 </a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if user.is_authenticated %}
+                                                    {{items.author}}
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

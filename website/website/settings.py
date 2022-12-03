@@ -137,4 +137,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_FILE_PATH = '/tmp/app-messages'
 
 # Переназначение пользователя
-# AUTH_USER_MODEL = 'userapp.User'
+AUTH_USER_MODEL = 'userapp.UserHh'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = 'user/login/'

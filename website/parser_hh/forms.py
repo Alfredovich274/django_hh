@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.sites import requests
 from .models import Param, Schedule, Experience
 
 
@@ -34,4 +35,5 @@ class CreateParams(forms.ModelForm):
 
     class Meta:
         model = Param
-        fields = '__all__'
+        exclude = ('author',)
+        #  fields = '__all__'
