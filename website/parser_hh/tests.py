@@ -39,32 +39,37 @@ class TestViews(TestCase):
 
     def setUp(self):
         self.client = Client()
-        # self.fake = Faker()
+        self.fake = Faker()
+        self.param = mixer.blend(Param, key_words='python')
 
     def test_views(self):
         UserHh.objects.create_user(username='test_user', email='test@test.com',
                                    password='test1234')
         response = self.client.get('/results/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 302)
 
-        user = self.client.login(username='test_user', password='test1234')
         print('мы вошли? :',
               self.client.login(username='test_user', password='test1234'))
 
         response = self.client.get('/results/')  # results
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
-        # response = self.client.get('/create-options/')
-        # self.assertEqual(response.status_code, 200)
-#
-#
-# def test_contact():
-#     pass
-# response = self.client.post('/contact/',
-#                                     {'name': self.fake.name(),
-#                                      'message': self.fake.text(),
-#                                      'email': self.fake.email()})
-#
-#
-# def test_create_params():
-#     pass
+        response = self.client.get('/create-options/')
+        self.assertEqual(response.status_code, 200)
+
+        # Проверяем заполнение формы параметров
+        response = self.client.post('/create-options/',
+                                    {'key_words': self.fake.name(),
+                                     'author': 'test_user'})
+        self.assertEqual(response.status_code, 302)
+
+        # Тест контакта
+        response = self.client.get('/contacts/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/contacts/',
+                                    {'name': self.fake.name(),
+                                     'message': self.fake.text(),
+                                     'email': self.fake.email()})
+        self.assertEqual(response.status_code, 302)
+
