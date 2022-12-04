@@ -73,3 +73,26 @@ class TestViews(TestCase):
                                      'email': self.fake.email()})
         self.assertEqual(response.status_code, 302)
 
+
+class TestActiveParam(TestCase):
+
+    def setUp(self):
+        self.param = mixer.blend(Param)
+
+    def test_set_de_active(self):
+        self.assertTrue(self.param.is_active)
+
+
+class TestActiveManager(TestCase):
+    model = Param
+
+    def setUp(self):
+        self.param = mixer.blend(self.model, is_active=False)
+
+    def test_get_queryset(self):
+        # print(self.model.active_objects.all())
+        self.assertFalse(self.model.active_objects.all())
+
+    def test_get_queryset_true(self):
+        # print(self.model.objects.all())
+        self.assertTrue(self.model.objects.all()[0], self.param)
