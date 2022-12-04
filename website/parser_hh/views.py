@@ -38,12 +38,13 @@ def contact(request):
 class ParamsListView(ListView):
     model = Param
     template_name = 'parser_hh/index.html'
+    paginate_by = 3
 
     def get_queryset(self):
         if self.request.user.id:
-            return Param.objects.filter(author_id=self.request.user.id)
+            return Param.active_objects.filter(author_id=self.request.user.id)
         else:
-            return Param.objects.all()
+            return Param.active_objects.all()
 
 
 class VacancyListView(LoginRequiredMixin, ListView):

@@ -1,5 +1,29 @@
 from django.db import models
 from userapp.models import UserHh
+from urllib import request
+
+
+class ActiveManager(models.Manager):
+
+    def get_queryset(self):
+        user_objects = super().get_queryset()
+        return user_objects.filter(is_active=True)
+
+
+# class ActiveUserManager(models.Manager):
+#
+#     def get_queryset(self):
+#         user_objects = super().get_queryset()
+#         return user_objects.filter(author=request.user)
+
+
+# class IsActiveMixin(models.Model):
+#     objects = models.Manager()
+#     active_objects = ActiveManager()
+#     is_active = models.BooleanField(default=False)
+#
+#     class Meta:
+#         abstract = True
 
 
 # Create your models here.
@@ -63,6 +87,11 @@ class Schedule(models.Model):
 
 
 class Param(models.Model):
+
+    objects = models.Manager()
+    active_objects = ActiveManager()
+    # user_objects = ActiveUserManager()
+
     key_words = models.CharField(max_length=64)
     salary = models.CharField(max_length=8, blank=True, null=True)
     city = models.CharField(max_length=8, blank=True, null=True)
@@ -71,6 +100,7 @@ class Param(models.Model):
     experience = models.ForeignKey(Experience, on_delete=models.CASCADE,
                                    blank=True, null=True)
     author = models.ForeignKey(UserHh, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.key_words

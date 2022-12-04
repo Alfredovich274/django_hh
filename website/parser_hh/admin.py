@@ -13,4 +13,26 @@ admin.site.register(Salary)
 admin.site.register(Schedule)
 admin.site.register(Experience)
 admin.site.register(Employment)
-admin.site.register(Param)
+
+
+def set_active(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+
+
+set_active.short_description = "Активировать"
+
+
+def set_de_active(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+
+
+set_de_active.short_description = "Деактивировать"
+
+
+class ParamAdmin(admin.ModelAdmin):
+    list_display = ['key_words', 'author', 'is_active']
+    actions = [set_active, set_de_active]
+
+
+admin.site.register(Param, ParamAdmin)
+
