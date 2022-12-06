@@ -6,11 +6,12 @@ from .models import Vacancy, Param, Schedule, Experience, Skill, Specialization
 from .forms import ContactForm, CreateParams
 from django.core.mail import send_mail
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.db.models import Prefetch
 from .mymixins import AuthorPermissionMixin
 
 
 # Create your views here.
-#  @login_required
+# @login_required
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -42,9 +43,15 @@ class ParamsListView(ListView):
 
     def get_queryset(self):
         if self.request.user.id:
-            return Param.active_objects.filter(author_id=self.request.user.id)
+            # return Param.active_objects.filter(author_id=self.request.user.id)
+            return Param.active_objects.select_related(
+                'author', 'experience',
+                'schedule').filter(author_id=self.request.user.id)
         else:
-            return Param.active_objects.all()
+            # return Param.active_objects.all()
+            return Param.active_objects.all().select_related('author',
+                                                             'experience',
+                                                             'schedule')
 
 
 class VacancyListView(LoginRequiredMixin, ListView):
@@ -109,6 +116,16 @@ class VacancyDetailView(UserPassesTestMixin, DetailView):
     def test_func(self):
         obj = self.get_object()  # рабочий вариант, но необходим объект
         return self.request.user.is_superuser or obj.author == self.request.user
+
+    def get_queryset(self):
+        return Vacancy.objects.all().select_related('employment',
+                'experience', 'salary', 'schedule', 'company', 'author',
+                'param')
+
+        # return Vacancy.objects.all().prefetch_related(Prefetch('specialization_set'), to_attr='special')
+        # return Vacancy.objects.all().prefetch_related('specialization', 'skill')
+
+    # 'specialization', 'skill',
 
     # def has_permission(self):
     #     return self.get_object().author == self.request.user

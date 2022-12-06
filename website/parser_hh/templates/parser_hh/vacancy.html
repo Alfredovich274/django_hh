@@ -6,7 +6,7 @@
             <section class="resume-section" id="about">
                 <div class="resume-section-content">
                     <h4 class="mb-0">
-                        {{object.name}}
+                        Вакансия - {{object.name}}
                     </h4>
                     <p class="lead mb-5">
                         <dl>
@@ -22,7 +22,7 @@
                             <dd>{{object.responsibility}}</dd>
                             <dt>Роли</dt><dd>{{object.role}}</dd>
                             <dt>Специализация</dt>
-                            {% for specialization in object.specialization.all %}
+                            {% for specialization in object.special.all %}
                                 <li>{{specialization}}</li>
                             {% endfor %}
                             <dt>Ссылка на страницу вакансии в hh.ru</dt>

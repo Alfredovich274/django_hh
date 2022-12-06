@@ -34,5 +34,5 @@ class ParamAdmin(admin.ModelAdmin):
     actions = [set_active, set_de_active]
 
 
-admin.site.register(Param, ParamAdmin)
+admin.site.register(Param, ParamAdmin)  # ParamAdmin
 
