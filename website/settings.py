@@ -39,10 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userapp',
     'parser_hh',
-    'debug_toolbar',
-    'rest_framework',
-    # django-cleanup должен быть самым последним
-    'django_cleanup.apps.CleanupConfig',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -80,27 +77,27 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # },
 
-#     'default': {
-#         'NAME': 'sitedb',
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'USER': 'django',
-#         'PASSWORD': 'nu123456',
-#         'HOST': 'localhost'
-#     }
-# }
+    'default': {
+        'NAME': 'sitedb',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'django',
+        'PASSWORD': 'nu123456',
+        'HOST': 'localhost'
+    }
+}
 
 
 # Password validation
@@ -171,11 +168,3 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
