@@ -16,12 +16,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework import routers
+from parser_hh.api_views import CityViewSet, SkillViewSet, ParamViewSet
+from parser_hh.api_views import ExperienceViewSet
+
+
+router_v0 = routers.DefaultRouter()
+router_v0.register(r'cities', CityViewSet)
+router_v0.register(r'skills', SkillViewSet)
+router_v0.register(r'params', ParamViewSet)
+router_v0.register(r'experience', ExperienceViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('parser_hh.urls', namespace='parser')),
-    path('user/', include('userapp.urls', namespace='user'))
+    path('user/', include('userapp.urls', namespace='user')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v0/', include(router_v0.urls))
 ]
 
 if settings.DEBUG:
