@@ -139,3 +139,4 @@ class VacancyDetailView(UserPassesTestMixin, DetailView):
 #     def test_func(self):
 #         obj = self.get_object()
 #         return obj.author == self.request.user
+

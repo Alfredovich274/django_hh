@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'parser_hh',
     'debug_toolbar',
     'rest_framework',
+    'rest_framework.authtoken',
     # django-cleanup должен быть самым последним
     'django_cleanup.apps.CleanupConfig',
 ]
@@ -175,7 +176,15 @@ INTERNAL_IPS = [
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    # Включили базовую авторизацию и сессию, токен авторизацию включим во view
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
