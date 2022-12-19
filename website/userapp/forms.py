@@ -7,3 +7,5 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = UserHh
         fields = ('username', 'password1', 'password2', 'email')
+
+

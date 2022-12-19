@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+Профиль пользователя
+{% endblock %}
+
+{% block content %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        Профиль пользователя {{object.username}}
+        <p></p>
+        Token:
+        <span id="token">
+        {% if object.auth_token %}
+            {{object.auth_token}}
+        {% else %}
+            none
+        {% endif %}
+        </span>
+        <p></p>
+        <form action="{% url 'user:update_token' %}">
+            <button type="submit" class="nav-link js-scroll-trigger">Create New token</button>
+        </form>
+        <p></p>
+        <button type="button" id="ajax-btn" class="nav-link js-scroll-trigger">Create New token ajax</button>
+    </body>
+    </html>
+{% endblock %}
